@@ -1,19 +1,49 @@
 language: c
 
 compiler:
-  - gcc
-  - clang
+  - gcc-4.6
+  - gcc-4.7
+  - gcc-4.8
+  - gcc-4.9
+  - gcc-5
+  - gcc-6
+  - clang-3.3
+  - clang-3.4
+  - clang-3.5
+  - clang-3.6
+  - clang-3.7
+  - clang-3.8
+  - clang-3.9
 
 env:
   - PLATFORM=x86
   - PLATFORM=x86_64
 
-addons: &addons
+addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-precise-3.5
+      - llvm-toolchain-precise-3.6
+      - llvm-toolchain-precise-3.7
+      - llvm-toolchain-precise-3.8
+      - llvm-toolchain-precise-3.9
     packages:
       - libreadline-dev
       - libreadline-dev:i386
-      - gcc-multilib
+      - gcc-4.6-multilib
+      - gcc-4.7-multilib
+      - gcc-4.8-multilib
+      - gcc-4.9-multilib
+      - gcc-5-multilib
+      - gcc-6-multilib
+      - clang-3.3
+      - clang-3.4
+      - clang-3.5
+      - clang-3.6
+      - clang-3.7
+      - clang-3.8
+      - clang-3.9
 
 matrix:
   include:
@@ -21,7 +51,9 @@ matrix:
       env:
         - secure: "rH+rQS0W+0U3C/W/uRqJ8E5A3KrlbWaDRpZtdT1/SO0kEMnmuG2b0UvoadcIKOEXNHnQeZ3kPQbG2Wjfo/D6up0mXGZLXAvaJZozagxdfF2QPHSpvj2NDRLM71+UaKK/ksq3auPq+o3Y74FZOc4oBr7kPpr01H0pK8/2lljxS2daINRgFfcsaRhKNshtvHBn/KLgbwa5vEB/jadKBKM+mgAYE1sFv8P3yZ3+MzxygpurJ6enU6/9JITF5QgB11ybivYCbqoEf+IhzxgsmELz0zgL+PCVzTvrrNzpCT1UZJ35vWht5Yf7/AmK3sI/rMJm7TYswFKAc7NUbn80oIw6opp7sW1oFqMEHnHNLMNSljg8BwUrbH+y6+yV7sRfG6djCTYUYGYY9ZC2Ef4r3s3ZrRwHuBujZx/DOnFj0nd0AuvETNPkMWD1996bvSQ+WkfZ4JdW335/G61GdQv7kMTutWLKrlDquqxKM1AsoP1d99vCBzpEfRKyZjDUUSmnjdvZ/QgIDidGzH3vYFO81N39HjgKZlxH+oCuoX2ak3A6BrOT7t6mgEXnGM4H9vWhoKb7hseadBsR7YnbFSRmF2FDihEoIJ/BCPykGSZWzxTF94zC3WURI1C3HL0sAHGg3M620FgFj3M4Xkf0CPsmdsjwsnZg6TgVkYwAaKKP0HI2MFs="
       addons:
-        <<: *addons
+        apt:
+          packages:
+            - libreadline-dev
         coverity_scan:
           project:
             name: "pali/udftools"
@@ -35,6 +67,8 @@ before_script:
   - CFLAGS="-W -Wall -Werror -Wno-error=strict-aliasing -Wno-error=unused-function -O2 -g"
   - if [ "$PLATFORM" = "x86" ]; then CFLAGS="-m32 $CFLAGS"; fi
   - export CFLAGS
+  - export CC="$COMPILER"
+  - set | grep gcc-4.6
 
 script:
   - if [ -n "$COVERITY_SCAN_TOKEN" ]; then exit 0; fi

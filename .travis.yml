@@ -27,6 +27,7 @@ addons:
     packages:
       - libreadline-dev
       - libreadline-dev:i386
+      - libc6-dev:i386
       - gcc-4.6-multilib
       - gcc-4.7-multilib
       - gcc-4.8-multilib
@@ -60,8 +61,6 @@ before_script:
   - CFLAGS="-W -Wall -Werror -Wno-error=strict-aliasing -Wno-error=unused-function -O2 -g"
   - if [ "$PLATFORM" = "x86" ]; then CFLAGS="-m32 $CFLAGS"; fi
   - export CFLAGS
-  - export CC="$COMPILER"
-  - set | grep gcc-4.6
 
 script:
   - if [ -n "$COVERITY_SCAN_TOKEN" ]; then exit 0; fi
